@@ -13,12 +13,5 @@ use Game\Entity;
 
 class EntityTest extends TestCase
 {
-    public function testInnitialPositionIsZero():void
-    {
-        $entity = new Entity();
-        $vector = new Vector([0,0,0]);
 
-        $this->assertEquals($vector, $entity->getPosition());
-
-    }
 }

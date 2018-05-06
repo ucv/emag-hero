@@ -12,8 +12,8 @@ use MathPHP\LinearAlgebra\Vector;
 
 class Entity
 {
-    private $position;
-
+    protected $id;
+    protected $position;
 
     public function __construct()
     {
@@ -21,13 +21,18 @@ class Entity
     }
 
     /**
-     * @return Vector
+     * @return mixed
      */
-    public function getPosition()
+    public function getId()
     {
-        return $this->position;
+        return $this->id;
     }
 
-
-
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
 }
