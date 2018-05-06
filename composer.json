@@ -1,0 +1,12 @@
+{
+    "name": "ucv/emag-hero",
+    "authors": [
+        {
+            "name": "Ungureanu C. Valentin",
+            "email": "u.valentin89@gmail.com"
+        }
+    ],
+    "require": {
+        "phpunit/phpunit": "^7.1"
+    }
+}
