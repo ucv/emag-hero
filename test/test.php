@@ -21,7 +21,8 @@ $battleground[] = $player->setName('Orderus')
     ->setSpeed(rand(40,50))
     ->setLuck(rand(10,30))
     ->learnSpell(Spell::RAPID_STRIKE)
-    ->learnSpell(Spell::MAGIC_SHIELD);
+    ->learnSpell(Spell::MAGIC_SHIELD)
+    ->getId();
 
 $npc = new Npc();
 $battleground[] = $npc->setName("Wild beast")
@@ -29,24 +30,44 @@ $battleground[] = $npc->setName("Wild beast")
     ->setStrength(rand(60,90))
     ->setDefence(rand(40,60))
     ->setSpeed(rand(40,60))
-    ->setLuck(rand(25,40));
+    ->setLuck(rand(25,40))
+    ->getId();
 
 $running = true;
-for ($i = 1;$i <= 20;$i++){
-    /** @var Npc $attackingNpc */
-    $attackingNpc = &$battleground[$i%2];
-    /** @var Npc $defendingNpc */
-    $defendingNpc = &$battleground[!$i%2];
+$fastestEntity = null;
+$fastestEntityId = 0;
+$fastestEntitySpeed = 0;
+foreach ($battleground as $entityId){
+    /** @var Npc $entity */
+    $entity = Game\Entity::getEntityById($entityId);
 
-    $damageGiven = $attackingNpc->attack($defendingNpc);
+//    echo $entity->getName() . " speed is:" . $entity->getSpeed().PHP_EOL;
+
+    $entitySpeed = $entity->getSpeed();
+    if($entitySpeed > $fastestEntitySpeed){
+        $fastestEntity = $entity;
+        $fastestEntityId = $entityId;
+        $fastestEntitySpeed = $entitySpeed;
+    }
+}
+
+
+echo $fastestEntity->getName(). ' charges at the enemy!'.PHP_EOL;
+for ($i = $fastestEntityId; $i <= 10; $i++){
+    /** @var Npc $attackingNpc */
+    $attackingNpc = \Game\Entity::getEntityById($battleground[$i%2]);
+    /** @var Npc $defendingNpc */
+    $defendingNpc = \Game\Entity::getEntityById($battleground[($i+1)%2]);
+
+    $damageGiven = $attackingNpc->attack($defendingNpc->getId());
 
     echo $attackingNpc->getName() . " attacked " .$defendingNpc->getName() . PHP_EOL;
-    echo $defendingNpc->getName() . " took " . $damageGiven . " damage;" . $defendingNpc->getHealth() .  PHP_EOL;
+    echo $defendingNpc->getName() . " took " . $damageGiven . " damage";
 
     if (!$defendingNpc->isAlive()){
-        echo $defendingNpc->getName() . " died!";
-        $running = false;
+        echo ' '.$defendingNpc->getName() . " died!";
+        break;
     }
-
+    echo " he has remaining " . $defendingNpc->getHealth().PHP_EOL;
 }
 

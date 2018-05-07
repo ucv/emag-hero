@@ -61,7 +61,7 @@ class Npc extends Entity
      */
     public function setHealth($health)
     {
-        $this->health = $health;
+        $this->health = $health>0?$health:0;
         return $this;
     }
 
@@ -146,7 +146,7 @@ class Npc extends Entity
     }
 
     public function learnSpell(string $spellName){
-        $this->spells[] = SpellFactory::createSpell(Spell::RAPID_STRIKE,$this);
+        $this->spells[] = SpellFactory::createSpell($spellName);
         return $this;
     }
 
@@ -155,10 +155,10 @@ class Npc extends Entity
         if($damage > 0){
             /** @var SpellInterface $spell */
             foreach ($this->getSpells() as $spell){
-                if($spell->getTriggerType() == Spell::TRIGGER_ON_DEFEND && false && $spell->getLuck() < rand(0,100)){
-                    $npc = new Npc();
-                    $damage = abs($spell->castSpell($npc,['damage' => $damage]));
-                    break;
+                /** @var SpellInterface $spell */
+                $spell = SpellFactory::getSpellById($spell);
+                if($spell->getTriggerType() == Spell::TRIGGER_ON_TAKE_DAMAGE){
+                    $damage = $spell->castSpell($this->getId(),['damage' => $damage]);
                 }
             }
             $this->setHealth($this->getHealth() - $damage);
@@ -166,14 +166,17 @@ class Npc extends Entity
         return $damage;
     }
 
-    public function attack(Npc &$enemy){
+    public function attack(int $entityId){
+        $damage = $this->getStrength();
+        $enemy = Entity::getEntityById($entityId);
         /** @var SpellInterface $spell */
         foreach ($this->getSpells() as $spell){
-            if($spell->getTriggerType() == Spell::TRIGGER_ON_ATTACK && $spell->getLuck() < rand(0,100)){
-                return $spell->castSpell($enemy);
+            $spell = SpellFactory::getSpellById($spell);
+            if($spell->getTriggerType() == Spell::TRIGGER_ON_ATTACK){
+                $damage = $spell->castSpell($entityId,['damage' => $damage]);
             }
         }
         //Damage = Attacker strength - Defender defence
-        return $enemy->takeDamage($this->getStrength());
+        return $enemy->takeDamage($damage);
     }
 }

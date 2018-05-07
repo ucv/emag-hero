@@ -8,16 +8,28 @@
 
 namespace Game;
 
-use MathPHP\LinearAlgebra\Vector;
+//use MathPHP\LinearAlgebra\Vector;
 
-class Entity
+abstract class Entity
 {
-    protected $id;
-    protected $position;
+    private static $currentEntityId = 0;
+    private static $entities = [];
 
-    public function __construct()
+    public static function getEntityById(int $id){
+        return isset(self::$entities[$id])?self::$entities[$id]:-1;
+    }
+
+    private $id;
+//    protected $position;
+
+    public final function __construct()
     {
-        $this->position = new Vector([0,0,0]);
+        $this->setId(self::$currentEntityId);
+        self::$entities[self::$currentEntityId] = $this;
+        self::$currentEntityId++;
+//        $this->position = new Vector([0,0,0]);
+
+        return $this->getId();
     }
 
     /**
@@ -31,7 +43,7 @@ class Entity
     /**
      * @param mixed $id
      */
-    public function setId($id): void
+    private function setId($id): void
     {
         $this->id = $id;
     }

@@ -12,36 +12,20 @@ use Game\Npc;
 
 class Spell{
 
-    const TRIGGER_ON_DEFEND=0;
+    const TRIGGER_ON_TAKE_DAMAGE=0;
     const TRIGGER_ON_ATTACK=1;
 
     const RAPID_STRIKE='rapid_strike';
     const MAGIC_SHIELD='magic_shield';
 
-    private $npc;
+    private $id;
     private $name;
     private $description;
     private $luck;
 
     private $triggerType;
 
-    /**
-     * @return Npc
-     */
-    public function getNpc()
-    {
-        return $this->npc;
-    }
 
-    /**
-     * @param Npc $npc
-     * @return Spell
-     */
-    public function setNpc(Npc $npc)
-    {
-        $this->npc = $npc;
-        return $this;
-    }
 
     /**
      * @return mixed
@@ -118,7 +102,4 @@ class Spell{
         $this->triggerType = $triggerType;
         return $this;
     }
-
-
-
 }

@@ -12,11 +12,10 @@ use Game\Npc;
 
 interface SpellInterface
 {
-    public function __construct(Npc &$npc, array $params = []);
+    public function __construct(int $spellId);
 
-    public function castSpell(Npc &$enemy = null, array $params = []);
+    public function castSpell(int $entityId, array $params = []);
     public function getSpellChance();
-    public function getLuck();
     public function getTriggerType();
 }
 
