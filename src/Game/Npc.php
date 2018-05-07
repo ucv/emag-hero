@@ -152,17 +152,23 @@ class Npc extends Entity
 
     public function takeDamage($amount){
         $damage = abs($this->getDefence() - $amount);
-        if($damage > 0){
-            /** @var SpellInterface $spell */
-            foreach ($this->getSpells() as $spell){
+        $dodgeRoll = rand(0, 100);
+        if($this->getLuck() <= $dodgeRoll){
+            if($damage > 0){
                 /** @var SpellInterface $spell */
-                $spell = SpellFactory::getSpellById($spell);
-                if($spell->getTriggerType() == Spell::TRIGGER_ON_TAKE_DAMAGE){
-                    $damage = $spell->castSpell($this->getId(),['damage' => $damage]);
+                foreach ($this->getSpells() as $spell){
+                    /** @var SpellInterface $spell */
+                    $spell = SpellFactory::getSpellById($spell);
+                    if($spell->getTriggerType() == Spell::TRIGGER_ON_TAKE_DAMAGE){
+                        $damage = $spell->castSpell($this->getId(),['damage' => $damage]);
+                    }
                 }
+                $this->setHealth($this->getHealth() - $damage);
             }
-            $this->setHealth($this->getHealth() - $damage);
+        }else{
+            echo $this->getName() . ' dodged['.$dodgeRoll.'] the attack.'.PHP_EOL;
         }
+
         return $damage;
     }
 

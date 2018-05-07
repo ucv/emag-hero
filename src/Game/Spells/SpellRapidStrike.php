@@ -22,10 +22,11 @@ class SpellRapidStrike extends Spell implements SpellInterface {
     public function castSpell(int $enemyId, array $params = [])
     {
         $damage = isset($params['damage'])?$params['damage']:0;
-        if($damage > 0 && $this->getLuck() >= rand(0,100)){
+        $spellRoll = rand(0, 100);
+        if($damage > 0 && $this->getLuck() >= $spellRoll){
             $damage = $damage * 2;
             $entity = Entity::getEntityById($enemyId);
-            echo '[Spell] '. $entity->getName() . ' casted ' . $this->getName().PHP_EOL;
+            echo '[Spell]['.$spellRoll.'] '. $this->getName(). ' was casted on ' . $entity->getName().PHP_EOL;
         }
         return $damage;
     }

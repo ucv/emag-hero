@@ -25,10 +25,11 @@ class SpellMagicShield extends Spell implements SpellInterface {
     {
         $damage = $params['damage'];
         if($damage > 0){
-            if($this->getLuck() >= rand(0,100)){
+            $spellRoll = rand(0, 100);
+            if($this->getLuck() >= $spellRoll){
                 $damage = $damage / 2;
                 $entity = Entity::getEntityById($entityId);
-                echo '[Spell] '. $this->getName(). ' was casted on ' . $entity->getName().PHP_EOL;
+                echo '[Spell]['.$spellRoll.'] '. $this->getName(). ' was casted on ' . $entity->getName().PHP_EOL;
             }
         }
         return $damage;

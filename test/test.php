@@ -37,6 +37,7 @@ $running = true;
 $fastestEntity = null;
 $fastestEntityId = 0;
 $fastestEntitySpeed = 0;
+$fastestEntityLuck = 0;
 foreach ($battleground as $entityId){
     /** @var Npc $entity */
     $entity = Game\Entity::getEntityById($entityId);
@@ -44,10 +45,15 @@ foreach ($battleground as $entityId){
 //    echo $entity->getName() . " speed is:" . $entity->getSpeed().PHP_EOL;
 
     $entitySpeed = $entity->getSpeed();
-    if($entitySpeed > $fastestEntitySpeed){
+    $entityLuck = $entity->getLuck();
+    if($entitySpeed >= $fastestEntitySpeed){
+        if($entitySpeed == $fastestEntitySpeed && $entityLuck < $fastestEntityLuck){
+            break;
+        }
         $fastestEntity = $entity;
         $fastestEntityId = $entityId;
         $fastestEntitySpeed = $entitySpeed;
+        $fastestEntityLuck = $entityLuck;
     }
 }
 
