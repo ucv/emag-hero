@@ -15,7 +15,7 @@ class SpellRapidStrike extends Spell implements SpellInterface {
     public function __construct(int $id)
     {
         $this->setName('Rapid Strike');
-        $this->setDescription('Strike twice while it\'s his turn to attack, there\'s a 10% he\'ll use this skill every time he attacks');
+        $this->setDescription('Strike twice while it\'s his turn to attack, there\'s a 10% he\'ll use this skill every time he attacks.');
         $this->setLuck(10);
     }
 
@@ -26,7 +26,7 @@ class SpellRapidStrike extends Spell implements SpellInterface {
         if($damage > 0 && $this->getLuck() >= $spellRoll){
             $damage = $damage * 2;
             $entity = Entity::getEntityById($enemyId);
-            echo '[Spell]['.$spellRoll.'] '. $this->getName(). ' was casted on ' . $entity->getName().PHP_EOL;
+            echo '[Spell]['.$spellRoll.'] '. $entity->getName(). ' has casted ' . $this->getName().PHP_EOL;
         }
         return $damage;
     }

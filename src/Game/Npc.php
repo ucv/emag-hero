@@ -146,7 +146,12 @@ class Npc extends Entity
     }
 
     public function learnSpell(string $spellName){
-        $this->spells[] = SpellFactory::createSpell($spellName);
+        $currentLearnedSpellId = SpellFactory::createSpell($spellName);
+        $this->spells[] = $currentLearnedSpellId;
+        $currentLearnedSpell = SpellFactory::getSpellById($currentLearnedSpellId);
+        echo $this->getName() . ' learned ' . $currentLearnedSpell->getName() . PHP_EOL;
+        echo 'Description: ' . $currentLearnedSpell->getDescription() . PHP_EOL;
+
         return $this;
     }
 
